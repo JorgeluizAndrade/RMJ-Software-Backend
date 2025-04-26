@@ -14,11 +14,18 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "tab_users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,38 +35,26 @@ public class User implements UserDetails {
 	@Column(length = 35, nullable = false)
 	private String username;
 
+	@Column(length = 35, nullable = false)
+	private String name;
+
+	@Column(length = 35, nullable = false)
+	private String email;
+
 	@Column(length = 100, nullable = false)
 	private String password;
 
-	
-    @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "tab_user_role", length = 20, nullable = false)
 	private UserRole role;
 
-	public User() {
-	}
 
-	public User(String username, String password, UserRole role) {
+	public User(String username, String name, String email, String password, UserRole role) {
 		this.username = username;
 		this.password = password;
+		this.name = name;
+		this.email = email;
 		this.role = role;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Override
@@ -70,9 +65,15 @@ public class User implements UserDetails {
 			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
+	// implements of UserDetails
 	@Override
 	public String getUsername() {
-		return username;
+		return email;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
 	}
 
 	@Override

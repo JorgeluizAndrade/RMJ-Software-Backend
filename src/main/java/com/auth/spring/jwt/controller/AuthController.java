@@ -20,7 +20,7 @@ import com.auth.spring.jwt.repository.UserRepository;
 import com.auth.spring.jwt.security.TokenService;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
 	@Autowired 
@@ -35,7 +35,7 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody @Validated AuthenticationDto data) {
 		try {
-			var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
+			var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
 			var auth = authenticationManager.authenticate(usernamePassword);
 			
 			var token = tokenService.generateToken((User) auth.getPrincipal());
@@ -48,14 +48,14 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity register(@RequestBody @Validated RegisterDto data) {
-		if (this.userRepo.findByUsername(data.username()) != null)
+		if (this.userRepo.findByEmail(data.email()) != null)
 			return ResponseEntity.badRequest().build();
 
 		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-		User newUser = new User(data.username(), encryptedPassword, data.role());
+		User newUser = new User(data.username(), data.name(), data.email(), encryptedPassword, data.role());
 
 		this.userRepo.save(newUser);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body(newUser);
 	}
 }

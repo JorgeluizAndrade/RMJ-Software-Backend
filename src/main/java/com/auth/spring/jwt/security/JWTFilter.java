@@ -33,7 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
 		if (token != null) {
 			var username = tokenService.validateToken(token);
 			if (username != null) {
-				User user = userRepo.findByUsername(username);
+				User user = userRepo.findByEmail(username);
 				if (user != null) {
 					var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(authentication);
