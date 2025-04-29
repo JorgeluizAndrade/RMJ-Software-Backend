@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.auth.spring.jwt.domain.AuthenticationDto;
-import com.auth.spring.jwt.domain.LoginResponseDto;
-import com.auth.spring.jwt.domain.RegisterDto;
+import com.auth.spring.jwt.api.dto.AuthenticationDto;
+import com.auth.spring.jwt.api.dto.LoginResponseDto;
+import com.auth.spring.jwt.api.dto.RegisterDto;
 import com.auth.spring.jwt.domain.User;
 import com.auth.spring.jwt.repository.UserRepository;
 import com.auth.spring.jwt.security.TokenService;
@@ -49,7 +49,7 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody @Validated RegisterDto data) {
-		User newUser = userService.registerUser(data);
+		var newUser = userService.registerUser(data);
 		return ResponseEntity.ok().body(newUser);
 	}
 }

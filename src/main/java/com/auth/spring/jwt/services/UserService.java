@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.auth.spring.jwt.domain.RegisterDto;
+import com.auth.spring.jwt.api.dto.RegisterDto;
 import com.auth.spring.jwt.domain.User;
 import com.auth.spring.jwt.exception.UserAlreadyExistsException;
 import com.auth.spring.jwt.exception.ValidUserException;
